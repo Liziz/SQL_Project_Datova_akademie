@@ -83,9 +83,9 @@ SELECT
 	tlzpspf2.avg_wages AS py_avg_wages,
 	round (tlzpspf1.avg_wages / tlzpspf2.avg_wages,3) AS y_y_koef,
 	CASE
-        WHEN tlzpspf1.avg_wages < tlzpspf2.avg_wages THEN 'meziro�n� pokles'
-        WHEN  tlzpspf1.avg_wages = tlzpspf2.avg_wages THEN 'meziro�n� stagnace'
-        ELSE 'meziro�n� r�st'
+        WHEN tlzpspf1.avg_wages < tlzpspf2.avg_wages THEN 'meziroční pokles'
+        WHEN  tlzpspf1.avg_wages = tlzpspf2.avg_wages THEN 'meziroční stagnace'
+        ELSE 'meziroční růst'
     END AS wages_mezirocne	
 FROM t_libor_zizala_project_sql_primary_final tlzpspf1
 JOIN t_libor_zizala_project_sql_primary_final tlzpspf2
@@ -125,8 +125,8 @@ WITH foods AS
 		year_id	  
 	FROM t_libor_zizala_project_sql_primary_final  
 	WHERE 
-		(food_category LIKE 'Ml�k%'
-		OR food_category LIKE 'Chl�b%')
+		(food_category LIKE 'Mlék%'
+		OR food_category LIKE 'Chléb%')
 		AND 
 		(	year_id IN 
 			(	SELECT 
@@ -215,7 +215,7 @@ SELECT
 	round (avg (y_y_koef_pct ), 0)	AS avg_y_y_pct
 FROM y_y_all_years
 GROUP BY food_category 
-ORDER BY avg_y_y_pct  ;
+ORDER BY avg_y_y_pct ;
 
 -- 3.VÝSLEDEK VAR C - nejnižší nárůst cen za celé sledované období kumulativně 
 WITH oldest AS 
@@ -322,7 +322,7 @@ ORDER BY y_y_w_p_diff_pct ;
 
 -- (B) AGREGAČNÍ tabulka -> t_libor_zizala_project_SQL_secondary_final (pro dodatečná data o dalších evropských státech)
 -- -> výběr podstatných polí pro za všechny státy  
-CREATE OR REPLACE VIEW v_libor_zizala_project_SQL_secondary_final AS   -- nejprve pro snaz�� odlad�n� vytvo�eno VIEW
+CREATE OR REPLACE VIEW v_libor_zizala_project_SQL_secondary_final AS   -- nejprve pro snazší odladění vytvořeno VIEW
 SELECT
 	country ,
 	`year` ,
@@ -358,7 +358,7 @@ FROM v_libor_zizala_project_SQL_secondary_final;
 -- ... růstu mezd na růstu GDP z předchozího roku, ale ani tato závislost není nijak zásadně silná.   
 
 -- VAR A - Analýza dopadu závislosti na HDP ze stejného roku 
-WITH tot_GDP AS -- meziro�n� n�r�st GDP podle let pro �R 
+WITH tot_GDP AS -- meziroční nárůst GDP podle let pro ČR 
 	(SELECT 
 		tlzpssf1.country ,	
 		tlzpssf1.`year`,
