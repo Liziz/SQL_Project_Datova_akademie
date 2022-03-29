@@ -1,29 +1,29 @@
--- ------------------------------------ Datová akademie - SQL project ------------------------------------------------------------------------------
+-- ------------------------------------ DatovÃ¡ akademie - SQL project ------------------------------------------------------------------------------
 
--- Zadani projektu --
--- 1. Rostou v prùbìhu let mzdy ve všech odvìtvích, nebo v nìkterıch klesají?
--- 2. Kolik je moné si koupit litrù mléka a kilogramù chleba za první a poslední srovnatelné období v dostupnıch datech
---    cen a mezd?
--- 3. Která kategorie potravin zdrauje nejpomaleji (je u ní nejniší percentuální meziroèní nárùst)?
--- 4. Existuje rok, ve kterém byl meziroèní nárùst cen potravin vıraznì vyšší ne rùst mezd (vìtší ne 10 %)?
--- 5. Má vıška HDP vliv na zmìny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste vıraznìji v jednom roce, projeví
---    se to na cenách potravin èi mzdách --    ve stejném nebo násdujícím roce vıraznìjším rùstem?
+-- ZadÃ¡ni projektu --
+-- 1. Rostou v prÅ¯bÄ›hu let mzdy ve vÅ¡ech odvÄ›tvÃ­ch, nebo v nÄ›kterÃ½ch klesajÃ­?
+-- 2. Kolik je moÅ¾nÃ© si koupit litrÅ¯ mlÃ©ka a kilogramÅ¯ chleba za prvnÃ­ a poslednÃ­ srovnatelnÃ© obdobÃ­ v dostupnÃ½ch datech
+--    ... cen a mezd?
+-- 3. KterÃ¡ kategorie potravin zdraÅ¾uje nejpomaleji (je u nÃ­ nejniÅ¾Å¡Ã­ percentuÃ¡lnÃ­ meziroÅ™nÃ­ nÃ¡rÅ¯st)?
+-- 4. Existuje rok, ve kterÃ©m byl meziroÅ™nÃ­ nÃ¡rÅ¯st cen potravin vÃ½raznÄ› vyÅ¡Å¡Ã­ neÅ¾ rÅ¯st mezd (vÄ›tÅ¡Ã­ neÅ¾ 10 %)?
+-- 5. MÃ¡ vÃ½Å¡a HDP vliv na zmÄ›ny ve mzdÃ¡ch a cenÃ¡ch potravin? Neboli, pokud HDP vzroste vÃ½raznÄ›ji v jednom roce, projevÃ­
+--    se to na cenÃ¡ch potravin Äi mzdÃ¡ch ve stejnÃ©m nebo nÃ¡sdujÃ­cÃ­m roce vÃ½raznÄ›jÅ¡Ã­m rÅ¯stem?
 
--- Zadání Vıstupu - DVE TABULKY v databazi, ze kterıch se data dají ziskat: 
+-- ZadÃ¡nÃ­ VÃ½stupu - DVÄš TABULKY v databÃ¡zi, ze kterÃ½ch se data dajÃ­ ziskat: 
 -- -> t_libor_zizala_project_SQL_primary_final (pro data mezd a cen potravin za CR sjednocenech na totozne porovnatelne
---    obdobi – spoleèné roky) a
+--    obdobi â€“ spoleÄnÃ© roky) a
 -- -> t_libor_zizala_project_SQL_secondary_final (pro dodatecna data o dalsich evropskych statech)
---
--- -> Pripravte sadu SQL, ktere z pripravenych tabulek ziskaji datovy podklad k odpovezeni na vytycene vyzkumne otazky
+
+-- -> PÅ™ipravte sadu SQL, kterÃ© z pÅ™ipravenÃ½ch tabulek zÃ­skaji datovÃ½ podklad k odpovÄ›zenÃ­ na vytyÄenÃ© vÃ½zkumne otÃ¡zky.
 
 
--- ØEŠENÍ --
+-- Å˜EÅ ENÃ --
 
--- (A) AGREGAÈNÍ tabulka -> t_libor_zizala_project_SQL_primary_final 
--- (pro data mezd a cen potravin za CR sjednocenech na totozne porovnatelne obdobi – spoleèné roky)
+-- (A) AGREGAÄŒNÃ tabulka -> t_libor_zizala_project_SQL_primary_final 
+-- (pro data mezd a cen potravin za CR sjednocenÃ½ch na totoÅ¾nÃ© porovnatelnÃ© obdobÃ­ - spoleÄnÃ© roky)
 
--- vıbìr a spojení podstatnıch polí kolem MZDY a CENY
-CREATE OR REPLACE VIEW v_libor_zizala_project_SQL_primary_final AS -- nejkrpve vytvoøeno VIEW pro snazší odladìní 
+-- vÃ½bÄ›r a spojenÃ­ podstatnÃ½ch polÃ­ kolem MZDY a CENY
+CREATE OR REPLACE VIEW v_libor_zizala_project_SQL_primary_final AS -- nejrpve vytvoÅ™eno VIEW pro snazÅ¡Ã­ odladÄ›nÃ­ 
 SELECT 
 	cpc.name AS food_category, 
     cpc.price_value AS price_volume,
@@ -63,13 +63,18 @@ WHERE
     	)
 GROUP BY industry, year_id ;
 
-CREATE OR REPLACE TABLE t_libor_zizala_project_SQL_primary_final AS   -- následnì vytvoøena poadovaná tabulka
+CREATE OR REPLACE TABLE t_libor_zizala_project_SQL_primary_final AS   -- nÃ¡slednÄ› vytvoÅ™ena poÅ¾adovanÃ¡ tabulka
 SELECT *
 FROM v_libor_zizala_project_SQL_primary_final;
 
     
--- 1.TASK: Rostou v prùbìhu let mzdy ve všech odvìtvích, nebo v nìkterıch klesají?
--- 1.VİSLEDEK VAR A - Pøehledová tabulka s více údaji, z ní lze vısledek snadno vyèíst:
+-- 1.TASK: Rostou v prÅ¯bÄ›hu let mzdy ve vÅ¡ech odvÄ›tvÃ­ch, nebo v nÄ›kterÃ½ch klesajÃ­?
+-- OdpovÄ›Ä TASK 1: V nÄ›kterÃ½ch odvÄ›tvÃ­ch mzdy meziroÄnÄ› klesajÃ­. PÅ™ehled odvÄ›tvÃ­ a roky, kdy mzdy mezoriÄnÄ› klesaly lze vidÄ›t ve vÃ½sledku 
+-- ... dotazu 1 VAR A - vÅ¡ude, kde je ve sloupci "y_y_koef" ÄÃ­slo menÅ¡Ã­ neÅ¾ 1, se jednÃ¡ o meziroÄnÃ­ pokles mezd. SlovnÄ› je pak uvedeno 
+-- ... ve sloupci "Wages-mezirocne".   
+-- ... Ve vÃ½sledku dotazu 1 VAR B je pak pouze vÃ½pis odvÄ›tvÃ­, ve kterÃ½ch doÅ¡ko kdykoliv bÄ›hem sledovanÃ©ho obdobÃ­ k mezirÄnÃ­mu poklesu mezd.
+
+-- 1.VÃSLEDEK VAR A - PÅ™ehledovÃ¡ tabulka s vÃ­ce Ãºdaji, z nÃ­Å¾ lze vÃ½sledek snadno vyÄÃ­st:
 SELECT 
 	tlzpspf1.industry,
 	tlzpspf1.year_id,
@@ -78,9 +83,9 @@ SELECT
 	tlzpspf2.avg_wages AS py_avg_wages,
 	round (tlzpspf1.avg_wages / tlzpspf2.avg_wages,3) AS y_y_koef,
 	CASE
-        WHEN tlzpspf1.avg_wages < tlzpspf2.avg_wages THEN 'meziroèní pokles'
-        WHEN  tlzpspf1.avg_wages = tlzpspf2.avg_wages THEN 'meziroèní stagnace'
-        ELSE 'meziroèní rùst'
+        WHEN tlzpspf1.avg_wages < tlzpspf2.avg_wages THEN 'meziroï¿½nï¿½ pokles'
+        WHEN  tlzpspf1.avg_wages = tlzpspf2.avg_wages THEN 'meziroï¿½nï¿½ stagnace'
+        ELSE 'meziroï¿½nï¿½ rï¿½st'
     END AS wages_mezirocne	
 FROM t_libor_zizala_project_sql_primary_final tlzpspf1
 JOIN t_libor_zizala_project_sql_primary_final tlzpspf2
@@ -91,7 +96,7 @@ WHERE
 	OR tlzpspf1.industry IS NOT NULL
 ORDER BY y_y_koef  ; 
 
--- 1.VİSLEDEK VAR B - Pouze pøehled odvìtví, kde v prùbìhu let mzdy klesají (bez dalších údajù).
+-- 1.VÃSLEDEK VAR B - Pouze pÅ™ehled odvÄ›tvÃ­, kde v prÅ¯bÄ›hu let mzdy klesajÃ­ (bez dalÅ¡Ã­ch ÃºdajÅ¯).
 SELECT 
 	DISTINCT tlzpspf1.industry 
 FROM t_libor_zizala_project_sql_primary_final tlzpspf1
@@ -105,8 +110,13 @@ WHERE
 ORDER BY industry ; 
 
 
--- 2. TASK: Kolik je moné si koupit litrù mléka a kilogramù chleba za první a poslední srovnatelné období v dostupnıch
+
+-- 2. TASK: Kolik je moÅ¾nÃ© si koupit litrÅ¯ mlÃ©ka a kilogramÅ¯ chleba za prvnÃ­ a poslednÃ­ srovnatelnÃ© obdobÃ­ v dostupnÃ½ch
 -- ...datech cen a mezd?
+-- OdpovÄ›Ä TASK 2: 
+-- ... Za prvnÃ­ sledovanÃ© obdobÃ­ (2006) lze za prÅ¯mnÄ›rnou mzdu koupit 1.261,9 chlebÅ¯ a 1.408,8 mlÃ©k.
+-- ... Za poslednÃ­ sledovanÃ© obdobÃ­ (2018) lze za prÅ¯mnÄ›rnou mzdu koupit 1.319,3 chlebÅ¯ a 1.613,6 mlÃ©k. 
+
 WITH foods AS 
 	(SELECT 
 		food_category,
@@ -115,8 +125,8 @@ WITH foods AS
 		year_id	  
 	FROM t_libor_zizala_project_sql_primary_final  
 	WHERE 
-		(food_category LIKE 'Mlék%'
-		OR food_category LIKE 'Chléb%')
+		(food_category LIKE 'Mlï¿½k%'
+		OR food_category LIKE 'Chlï¿½b%')
 		AND 
 		(	year_id IN 
 			(	SELECT 
@@ -130,7 +140,7 @@ WITH foods AS
 				FROM t_libor_zizala_project_sql_primary_final
 			)
 		) 	
-	 ), -- vıbìr potravin a jejich cen v min a max roku 
+	 ), -- vÃ½bÄ›r potravin a jejich cen v min a max roku 
 	wages AS	
 	(SELECT 
 		year_id,
@@ -149,7 +159,7 @@ WITH foods AS
 				FROM t_libor_zizala_project_sql_primary_final
 			)	
 	GROUP BY year_id 
-	) -- vıbìr platù v min a max roku  
+	) -- vÃ½bÄ›r platÅ¯ v min a max roku  
 SELECT 
 	foods.food_category,
 	foods.avg_price,
@@ -162,15 +172,19 @@ JOIN wages
 	ON foods.year_id = wages.year_id ;
 	
 
--- 3. TASK: Která kategorie potravin zdrauje nejpomaleji (je u ní nejniší percentuální meziroèní nárùst)?
--- 3.VİSLEDEK VAR A - srovnání jen meziroèního nárùstu kategorie potravin v historii dat mezi dvìma roky - od nejnišího 
+-- 3. TASK: KterÃ¡ kategorie potravin zdraÅ¾uje nejpomaleji (je u nÃ­ nejniÅ¾Å¡Ã­ percentuÃ¡lnÃ­ meziroÄnÃ­ nÃ¡rÅ¯st)?
+-- OdpovÄ›Ä TASK 3: OtÃ¡zka je poloÅ¾ena velmi obecnÄ›, proto podle mne existuje vÃ­ce odpovÄ›dÃ­ polde kontextu:
+-- NejmenÅ¡Ã­ meziroÄnÃ­ zmÄ›na cen (pokud nÃ¡s zajÃ­mÃ¡ i pokles cen) byla zaznamenÃ¡na u rajskÃ½ch jablek v roce 2007 - pokles na 70% cen pÅ™. roku.
+-- NejmenÅ¡Ã­ zmÄ›na cen v kumulaci za celÃ© sledovanÃ© obdobÃ­ bylo vidÄ›t u cukru krytsalovÃ©ho - pokles ceny o vÃ­ce jak 27%
+
+-- 3.VÃSLEDEK VAR A - srovnÃ¡nÃ­ jen meziroÄnÃ­ho nÃ¡rÅ¯stu kategorie potravin v historii dat mezi dvÄ›ma roky - od nejniÅ¾Å¡Ã­ho  
 SELECT 
 	tlzpspf1.food_category,
 	tlzpspf2.year_id  AS prev_year_id,
 	tlzpspf2.avg_price AS py_avg_price,
 	tlzpspf1.year_id,
 	tlzpspf1.avg_price ,
-	round (tlzpspf1.avg_price / tlzpspf2.avg_price , 2) * 100 AS y_y_koef_pct
+	round (tlzpspf1.avg_price / tlzpspf2.avg_price , 4) * 100 AS y_y_koef_pct
 FROM t_libor_zizala_project_sql_primary_final tlzpspf1
 JOIN t_libor_zizala_project_sql_primary_final tlzpspf2
 	ON tlzpspf1.food_category = tlzpspf2.food_category 
@@ -179,7 +193,7 @@ WHERE
 	tlzpspf1.food_category IS NOT NULL
 ORDER BY y_y_koef_pct ;
 
--- 3.VİSLEDEK VAR B - srovnání dle prùmìrného meziroèního nárùstu za celé sledované období
+-- 3.VÃSLEDEK VAR B - srovnÃ¡nÃ­ dle prÅ¯mÄ›rnÃ©ho meziroÄnÃ­ho nÃ¡rÅ¯stu za celÃ© sledovanÃ© obdobÃ­
 WITH y_y_all_years AS 
 	(SELECT 
 		tlzpspf1.food_category,
@@ -195,7 +209,7 @@ WITH y_y_all_years AS
 	WHERE	
 		tlzpspf1.food_category IS NOT NULL
 	ORDER BY y_y_koef_pct
-	) -- pøehled všech meziroèníh zmìn cen v % po jednotlivıch kategoriích potravin
+	) -- pÅ™ehled vÅ¡ech meziroÄnÃ­h zmÄ›n cen v % po jednotlivÃ½ch kategoriÃ­ch potravin
 SELECT 
 	food_category ,
 	round (avg (y_y_koef_pct ), 0)	AS avg_y_y_pct
@@ -203,7 +217,7 @@ FROM y_y_all_years
 GROUP BY food_category 
 ORDER BY avg_y_y_pct  ;
 
--- 3.VİSLEDEK VAR C - nejniší nárùst cen za celé sledované období kumulativnì 
+-- 3.VÃSLEDEK VAR C - nejniÅ¾Å¡Ã­ nÃ¡rÅ¯st cen za celÃ© sledovanÃ© obdobÃ­ kumulativnÄ› 
 WITH oldest AS 
 	(SELECT 
 		food_category,
@@ -220,7 +234,7 @@ WITH oldest AS
 			 FROM t_libor_zizala_project_sql_primary_final
 			)		  
 	GROUP BY food_category, year_id
-	), -- vıtah cen pro nejniší dostupnı rok 
+	), -- vÃ½tah cen pro nejniÅ¾Å¡Ã­ dostupnÃ½ rok 
 	youngest AS
 	(SELECT 
 		food_category,
@@ -237,7 +251,7 @@ WITH oldest AS
 			 FROM t_libor_zizala_project_sql_primary_final
 			)		  
 	GROUP BY food_category, year_id
-	) -- vıtah cen pro nejvyšší dostupnı rok
+	) -- vÃ½tah cen pro nejvyÅ¡Å¡Ã­ dostupnÃ½ rok
 SELECT 
 	oldest.food_category,
 	oldest.price_unit,
@@ -245,16 +259,18 @@ SELECT
 	oldest.avg_price,
 	youngest.year_id,
 	youngest.avg_price,
-	round( youngest.avg_price / oldest.avg_price * 100 -100,0) AS 'total_pct_change'
+	round( youngest.avg_price / oldest.avg_price * 100 -100,2) AS 'total_pct_change'
 FROM oldest  
 JOIN youngest  
 	ON oldest.food_category = youngest.food_category 
 ORDER BY total_pct_change ;
 
 	
--- 4. TASK: Existuje rok, ve kterém byl meziroèní nárùst cen potravin vıraznì vyšší ne rùst mezd (vìtší ne 10 %)?
--- 4. VİSLEDEK - Z dat vyplıvá, e nikoliv. 
-WITH tot_wages AS -- meziroèní nárùst mezd dohromady podle let
+-- 4. TASK: Existuje rok, ve kterÃ©m byl meziroÄnÃ­ nÃ¡rÅ¯st cen potravin vÃ½raznÄ› vyÅ¡Å¡Ã­ neÅ¾ rÅ¯st mezd (vÄ›tÅ¡Ã­ neÅ¾ 10 %)?
+-- OdpovÄ›Ä TASK 4: V rÃ¡mci sledovanÃ©ho obdobÃ­ je nejvyÅ¡Å¡Ã­ rozdÃ­l mezi rÅ¯stem cen potravin a rÅ¯stem mezd 8,3% (v roce 2010). 
+-- ... Proto nelze Å™Ã­ci, Å¾e by ve sledovanÃ©m obdobÃ­ existoval rok, kde by potraviny rostly o vÃ­ce jak 10% rychleji neÅ¾ mzdy.
+ 
+WITH tot_wages AS -- meziroÄnÃ­ nÃ¡rÅ¯st mezd dohromady podle let
 	(SELECT 
 		-- tlzpspf1.industry,
 		tlzpspf1.year_id,
@@ -273,7 +289,7 @@ WITH tot_wages AS -- meziroèní nárùst mezd dohromady podle let
 	ORDER BY year_id  
 			-- avg_y_wages 
 	),
-	tot_prices AS -- mezoroèní nárùst cen potravin dohromady podle let 
+	tot_prices AS -- mezoroÄnÃ­ nÃ¡rÅ¯st cen potravin dohromady podle let 
 	(SELECT 
 		-- tlzpspf1.food_category,
 		-- tlzpspf2.year_id  AS prev_year_id,
@@ -292,7 +308,7 @@ WITH tot_wages AS -- meziroèní nárùst mezd dohromady podle let
 	ORDER BY year_id 
 			-- y_y_price_pct
 	)
-SELECT -- porovnání meziroèního nárùst mezd s meziroèním nárùstem cen potravin seøazenım dle velikosti diference
+SELECT -- porovnÃ¡nÃ­ meziroÄnÃ­ho nÃ¡rÅ¯st mezd s meziroÄnÃ­m nÃ¡rÅ¯stem cen potravin seÅ™azenÃ½m dle velikosti diference
 	tot_wages.year_id ,
 	tot_wages.y_y_wages_pct,
 	tot_prices.y_y_price_pct,
@@ -304,9 +320,9 @@ ORDER BY y_y_w_p_diff_pct ;
 
 
 
--- (B) AGREGAÈNÍ tabulka -> t_libor_zizala_project_SQL_secondary_final (pro dodateèná data o dalších evropskıch státech)
--- -> vıbìr podstatnıch polí pro za všechny státy 
-CREATE OR REPLACE VIEW v_libor_zizala_project_SQL_secondary_final AS   -- nejprve pro snazší odladìní vytvoøeno VIEW
+-- (B) AGREGAÄŒNÃ tabulka -> t_libor_zizala_project_SQL_secondary_final (pro dodateÄnÃ¡ data o dalÅ¡Ã­ch evropskÃ½ch stÃ¡tech)
+-- -> vÃ½bÄ›r podstatnÃ½ch polÃ­ pro za vÅ¡echny stÃ¡ty  
+CREATE OR REPLACE VIEW v_libor_zizala_project_SQL_secondary_final AS   -- nejprve pro snazï¿½ï¿½ odladï¿½nï¿½ vytvoï¿½eno VIEW
 SELECT
 	country ,
 	`year` ,
@@ -315,23 +331,34 @@ FROM economies
 WHERE 
 	GDP IS NOT NULL ;
 
-SELECT 	-- kontrolní vıstup z pøedpøipravené tabulky pro ÈR
+SELECT 	-- kontrolnÃ­ vÃ½stup z pÅ™edpÅ™ipravenÃ© tabulky pro ÄŒR
 	*
 FROM v_libor_zizala_project_sql_secondary_final  
 WHERE 
 	country LIKE 'Czech%'	
 ORDER BY country ;
 
-CREATE OR REPLACE TABLE t_libor_zizala_project_SQL_secondary_final AS  -- z VIEW vytvoøena poadovaná tabulka
+CREATE OR REPLACE TABLE t_libor_zizala_project_SQL_secondary_final AS  -- z VIEW vytvoÅ™ena poÅ¾adovanÃ¡ tabulka
 SELECT *
 FROM v_libor_zizala_project_SQL_secondary_final;
 
 
 
--- 5. Má vıška HDP vliv na zmìny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste vıraznìji v jednom roce, 
--- ...projeví se to na cenách potravin èi mzdách ve stejném nebo následujícím roce vıraznìjším rùstem?
--- VAR A - Analıza dopadu závislosti na HDP ze stejného roku 
-WITH tot_GDP AS -- meziroèní nárùst GDP podle let pro ÈR 
+-- 5. TASK: MÃ¡ vÃ½Å¡ka HDP vliv na zmÄ›ny ve mzdÃ¡ch a cenÃ¡ch potravin? Neboli, pokud HDP vzroste vÃ½raznÄ›ji v jednom roce, 
+-- ...projevÃ­ se to na cenÃ¡ch potravin Äi mzdÃ¡ch ve stejnÃ©m nebo nÃ¡sledujÃ­cÃ­m roce vÃ½raznÄ›jÅ¡Ã­m rÅ¯stem?
+-- OdpovÄ›Ä TASK 5: SrovnÃ¡nÃ­ probÄ›hlo ve dvou variantÃ¡ch - VAR A (mezroÄnÃ­ nÅ¯rÅ¯sty u GDP, cen i mezd porovnÃ¡ny za stejnÃ¡ obdobÃ­) a 
+-- ... VAR B (mezroÄnÃ­ nÅ¯rÅ¯sty cen i mezd porovnÃ¡ny s meziroÄnÃ­m rÅ¯stem GDP vÅ¾dy z pÅ™edchozÃ­ho roku - zkoumÃ¡n vliv pÅ™i roÄnÃ­m zpoÅ¾dÄ›nÃ­). 
+-- AnalÃ½za zÃ¡vislosti provedena v samostatnÃ©m Excel. souboru Task_5_HDP_vliv_na_mzdy_a_ceny.xlsx, kam byla vÃ½slednÃ¡ data z dotazÅ¯ vyexportovÃ¡na.
+-- Pro jednotlivÃ© zkoumanÃ© zÃ¡vislosti provedena regresnÃ­ analÃ½za (pro zjednoduÅ¡enÃ­ omezena jen na modelaci lineÃ¡rnÃ­ regrese).
+-- Do grafÅ¯ byla doplnÄ›na rovnice lineÃ¡rnÃ­ho trendu a koeficient spolehlivosti (R2).
+-- Z vÃ½sledkÅ¯ vyplÃ½vÃ¡, Å¾e zÃ¡vislost cen potravin a mezd na GDP nenÃ­ ani v jednom z pÅ™Ã­padÅ¯ vysokÃ¡. V rÃ¡mci analÃ½zy dle VAR A (stejnÃ½ rok)
+-- ... byl interval spolehlivosti na velmi nÃ­zkÃ© Ãºrovni (R2 < 0,15), tj. lineÃ¡rnÃ­ zÃ¡vislost je velice nÃ­zkÃ¡.
+-- V rÃ¡mci analÃ½zy dle VAR B (tj. GDP zmÄ›na pÅ™edchozÃ­ rok) byla zÃ¡vislst cen potravin prakticky nulovÃ¡. Naopak zÃ¡vislost rÅ¯stu mezd  
+-- ... na zmÄ›nÄ› GDP byla ze vÅ¡ech analyzovanÃ½ch pÅ™Ã­padÅ¯ nejvyÅ¡Å¡Ã­ (R2 = 0,52). Tato vyÅ¡Å¡Ã­ hodnota potvrzuje urÄitou mÃ­ru zÃ¡vislosti
+-- ... rÅ¯stu mezd na rÅ¯stu GDP z pÅ™edchozÃ­ho roku, ale ani tato zÃ¡vislost nenÃ­ nijak zÃ¡sadnÄ› silnÃ¡.   
+
+-- VAR A - AnalÃ½za dopadu zÃ¡vislosti na HDP ze stejnÃ©ho roku 
+WITH tot_GDP AS -- meziroï¿½nï¿½ nï¿½rï¿½st GDP podle let pro ï¿½R 
 	(SELECT 
 		tlzpssf1.country ,	
 		tlzpssf1.`year`,
@@ -345,7 +372,7 @@ WITH tot_GDP AS -- meziroèní nárùst GDP podle let pro ÈR
 	GROUP BY tlzpssf1.country, tlzpssf1.`year`
 	ORDER BY tlzpssf1.`year` 
 	),
-	tot_wages AS -- meziroèní nárùst mezd dohromady podle let
+	tot_wages AS -- meziroÄnÃ­ nÃ¡rÅ¯st mezd dohromady podle let
 	(SELECT 
 		tlzpspf1.year_id,		
 		round( avg(tlzpspf1.avg_wages / tlzpspf2.avg_wages) * 100, 1) AS y_y_wages_pct		
@@ -360,7 +387,7 @@ WITH tot_GDP AS -- meziroèní nárùst GDP podle let pro ÈR
 	ORDER BY year_id  
 			-- avg_y_wages 
 	),
-	tot_prices AS -- mezoroèní nárùst cen potravin dohromady podle let 
+	tot_prices AS -- meziroÄnÃ­ nÃ¡rÅ¯st cen potravin dohromady podle let  
 	(SELECT 
 		tlzpspf1.year_id,		
 		round( avg(tlzpspf1.avg_price / tlzpspf2.avg_price) * 100, 1) AS y_y_price_pct
@@ -374,7 +401,7 @@ WITH tot_GDP AS -- meziroèní nárùst GDP podle let pro ÈR
 	GROUP BY tlzpspf1.year_id 
 	ORDER BY year_id		
 	)
-SELECT -- porovnání meziroèního nárùst mezd cen potravin a GDP v téme roce
+SELECT -- porovnÃ¡nÃ­ meziroÄnÃ­ho nÃ¡rÅ¯st mezd cen potravin a GDP v tÃ©mÅ¾e roce
 	tot_wages.year_id ,
 	tot_wages.y_y_wages_pct -100 AS wages_growth_pct,
 	tot_prices.y_y_price_pct -100 AS price_growth_pct,
@@ -383,12 +410,12 @@ FROM tot_wages
 JOIN tot_prices 
 	ON tot_wages.year_id = tot_prices.year_id
 JOIN tot_GDP  
-	ON tot_wages.year_id = tot_GDP.YEAR       -- ve vazbì na nárùst GDP z tého roku
+	ON tot_wages.year_id = tot_GDP.YEAR       -- ve vazbÄ› na nÃ¡rÅ¯st GDP z tÃ©hoÅ¾ roku
 ORDER BY tot_wages.year_id ;
 
 
--- VAR B - Analıza dopadu závislosti na zmìnì HDP z pøedchozího roku 
-  WITH tot_GDP AS -- meziroèní nárùst GDP podle let pro ÈR 
+-- VAR B - AnalÃ½za dopadu zÃ¡vislosti na zmÄ›nÄ› HDP z pÅ™edchozÃ­ho roku 
+  WITH tot_GDP AS -- meziroÄnÃ­ nÃ¡rÅ¯st GDP podle let pro ÄŒR
 	(SELECT 
 		tlzpssf1.country ,	
 		tlzpssf1.`year`,
@@ -402,7 +429,7 @@ ORDER BY tot_wages.year_id ;
 	GROUP BY tlzpssf1.country, tlzpssf1.`year`
 	ORDER BY tlzpssf1.`year` 
 	),
-	tot_wages AS -- meziroèní nárùst mezd dohromady podle let
+	tot_wages AS -- meziroÄnÃ­ nÃ¡rÅ¯st mezd dohromady podle let
 	(SELECT 
 		tlzpspf1.year_id,		
 		round( avg(tlzpspf1.avg_wages / tlzpspf2.avg_wages) * 100, 1) AS y_y_wages_pct		
@@ -417,7 +444,7 @@ ORDER BY tot_wages.year_id ;
 	ORDER BY year_id  
 			-- avg_y_wages 
 	),
-	tot_prices AS -- mezoroèní nárùst cen potravin dohromady podle let 
+	tot_prices AS -- meziroÄnÃ­ nÃ¡rÅ¯st cen potravin dohromady podle let 
 	(SELECT 
 		tlzpspf1.year_id,		
 		round( avg(tlzpspf1.avg_price / tlzpspf2.avg_price) * 100, 1) AS y_y_price_pct
@@ -431,7 +458,7 @@ ORDER BY tot_wages.year_id ;
 	GROUP BY tlzpspf1.year_id 
 	ORDER BY year_id		
 	)
-SELECT -- porovnání meziroèního nárùst mezd cen potravin a nárùstu GDP v pøedchozím roce (vliv dopadu s roèním zpodìním)
+SELECT -- porovnÃ¡nÃ­ meziroÄnÃ­ho nÃ¡rÅ¯st mezd cen potravin a nÃ¡rÅ¯stu GDP v pÅ™edchozÃ­m roce (vliv dopadu s roÄnÃ­m zpoÅ¾dÄ›nÃ­m)
 	tot_wages.year_id ,
 	tot_wages.y_y_wages_pct -100 AS wages_growth_pct,
 	tot_prices.y_y_price_pct -100 AS price_growth_pct,
@@ -440,12 +467,10 @@ FROM tot_wages
 JOIN tot_prices 
 	ON tot_wages.year_id = tot_prices.year_id
 JOIN tot_GDP  
-	ON tot_wages.year_id = tot_GDP.YEAR +1      -- ve vazbì na nárùst GDP z pøedchozího roku  
+	ON tot_wages.year_id = tot_GDP.YEAR +1      -- ve vazbÄ› na nÃ¡rÅ¯st GDP z pÅ™edchozÃ­ho roku  
 ORDER BY tot_wages.year_id ;
 
--- Analıza závislosti provedena v samostatném Excel. souboru Task_5_HDP_vliv_na_mzdy_a_ceny.xlsx :
--- Pro jednotlivé zkoumané závislosti provedena regresní analıza (pro zjednodušení omezena na modelaci lineární regrese).
--- Vyšší míra závislosti na GDP nalezena u mezd neli u cen potravin - vyjádøena proloenou regersní pøímkou a vyjádøena rovnicí.
+
 
 
 
